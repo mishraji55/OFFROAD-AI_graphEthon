@@ -1,5 +1,5 @@
 ## 🌐 Live Demo
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://mishraji55.github.io/OFFROAD-AI_graphEthon/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://mishraji55.github.io/CODEZEN-offroadGuide/)
 
 ---
 title: Semantic Segmentation Demo
@@ -203,4 +203,4 @@ To improve this website:
 
 ---
 
-**Last Updated**: February 2026
+**Last Updated**: April 2026
