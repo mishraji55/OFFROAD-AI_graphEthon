@@ -147,24 +147,31 @@ async function predictVideo() {
   let decisions = []
   let html = ""
 
+  // 🔥 BATCH PROCESSING: Send all frames at once (much faster!)
+  const fd = new FormData()
   for (let i = 0; i < frames.length; i++) {
-    let fd = new FormData()
-    fd.append("file", frames[i])
+    fd.append("files", frames[i])
+  }
 
-    let res = await fetch("/predict-image", {
-      method: "POST",
-      body: fd
-    })
+  document.getElementById("videoFramesResults").innerHTML = "<p>Processing all frames in batch...</p>"
 
-    let data = await res.json()
+  const res = await fetch("/predict-batch", {
+    method: "POST",
+    body: fd
+  })
 
-    decisions.push(data.decision)
+  const data = await res.json()
+  const results = data.results
+
+  for (let i = 0; i < results.length; i++) {
+    const result = results[i]
+    decisions.push(result.decision)
 
     html += `
       <div>
-        <img src="data:image/png;base64,${data.mask}" width="100%">
-        <p>Terrain: ${data.terrain}</p>
-        <p>Decision: ${data.decision}</p>
+        <img src="data:image/png;base64,${result.mask}" width="100%">
+        <p>Terrain: ${result.terrain}</p>
+        <p>Decision: ${result.decision}</p>
       </div>
     `
   }
@@ -252,7 +259,6 @@ async function analysisLoop() {
     if (!res.ok) throw new Error("API error")
 
     const data = await res.json()
-    frameCount++
 
     console.log(`Frame ${frameCount}: ${data.terrain} - ${data.decision}`)
 
